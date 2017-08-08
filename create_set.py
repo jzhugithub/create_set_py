@@ -40,7 +40,7 @@ class CreatSet(object):
         if event == cv2.EVENT_LBUTTONUP:
             cv2.rectangle(self.img, tuple(self.pre_pt), tuple(self.end_pt), (0, 255, 0))
             cv2.imwrite(os.path.join(self.folder_path, self.orgName + '0.jpg'), self.img)
-            outImg = self.org[self.pre_pt[0]:self.end_pt[0], self.pre_pt[1]:self.end_pt[1], :]
+            outImg = self.org[self.pre_pt[1]:self.end_pt[1], self.pre_pt[0]:self.end_pt[0], :]
             if outImg.shape[0] > 0 and outImg.shape[1] > 0:
                 cv2.imwrite(os.path.join(self.folder_path, self.orgName + str(self.count) + '.jpg'), outImg)
             self.count += 1
@@ -77,5 +77,5 @@ class CreatSet(object):
 
 
 if __name__ == '__main__':
-    cs = CreatSet('bh', 10, 'images')
+    cs = CreatSet('fisheye', 10, 'images')
     cs.run()
