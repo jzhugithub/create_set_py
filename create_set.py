@@ -1,6 +1,36 @@
+#! /usr/bin/env python
+# -*- coding=utf-8 -*-
 import cv2
 import numpy as np
 import os
+import itertools
+
+
+def crop_center(image, edge_rate = 0.1):
+    image_center = image[int(image.shape[0] * edge_rate):int(image.shape[0] * (1 - edge_rate)),
+                   int(image.shape[1] * edge_rate):int(image.shape[1] * (1 - edge_rate)), :]
+    image_center = cv2.resize(image_center, tuple(image.shape[:2]))
+    return image_center
+
+
+def flip(image):
+    return cv2.flip(image, 1)
+
+
+def image_data_augmentation(image):
+    functions = [crop_center, flip]
+    function_combins = []
+    images = [image]
+    for i in range(1, len(functions) + 1):
+        combin = itertools.combinations(functions, i)
+        function_combins.extend(list(combin))
+
+    for function_combin in function_combins:
+        image_tmp = np.array(image)
+        for func in function_combin:
+            image_tmp = func(image_tmp)
+        images.append(image_tmp)
+    return images
 
 
 class CreatSet(object):
@@ -39,11 +69,16 @@ class CreatSet(object):
             cv2.rectangle(self.tmp, tuple(self.pre_pt), tuple(self.end_pt), (0, 255, 0))
         if event == cv2.EVENT_LBUTTONUP:
             cv2.rectangle(self.img, tuple(self.pre_pt), tuple(self.end_pt), (0, 255, 0))
-            cv2.imwrite(os.path.join(self.folder_path, self.orgName + '0.jpg'), self.img)
+            if self.pre_pt[0] > self.end_pt[0]:# keep x,y of pre_pt smaller than end_pt's
+                tmp_pt = self.pre_pt
+                self.pre_pt = self.end_pt
+                self.end_pt = tmp_pt
             outImg = self.org[self.pre_pt[1]:self.end_pt[1], self.pre_pt[0]:self.end_pt[0], :]
+            print(outImg.shape)
             if outImg.shape[0] > 0 and outImg.shape[1] > 0:
-                cv2.imwrite(os.path.join(self.folder_path, self.orgName + str(self.count) + '.jpg'), outImg)
-            self.count += 1
+                for new_img in image_data_augmentation(outImg):
+                    cv2.imwrite(os.path.join(self.folder_path, self.orgName + str(self.count) + '.jpg'), new_img)
+                    self.count += 1
         cv2.putText(self.tmp, '%s, %s' % (x, y), tuple(self.cur_pt), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2, 30)
         cv2.imshow('img', self.tmp)
 
