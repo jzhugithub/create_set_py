@@ -17,8 +17,7 @@ def flip(image):
     return cv2.flip(image, 1)
 
 
-def image_data_augmentation(image):
-    functions = [crop_center, flip]
+def image_data_augmentation(image, functions):
     function_combins = []
     images = [image]
     for i in range(1, len(functions) + 1):
@@ -46,15 +45,18 @@ class CreatSet(object):
     pre_pt = np.zeros(2, np.int32)
     end_pt = np.zeros(2, np.int32)
     cur_pt = np.zeros(2, np.int32)
+    functions = []
 
     count = 1
 
-    def __init__(self, orgName, frame_interval, folder_path):
+    def __init__(self, orgName, frame_interval, folder_path, functions, begin_count = 1):
         self.orgName = orgName
         self.frame_interval = frame_interval
         self.folder_path = folder_path
         if not os.path.exists(self.folder_path):
             os.mkdir(self.folder_path)
+        self.count = begin_count
+        self.functions = functions
 
     def on_mouse(self, event, x, y, flags, param):
         self.cur_pt = np.array([x, y], np.int32)
@@ -76,7 +78,7 @@ class CreatSet(object):
             outImg = self.org[self.pre_pt[1]:self.end_pt[1], self.pre_pt[0]:self.end_pt[0], :]
             print(outImg.shape)
             if outImg.shape[0] > 0 and outImg.shape[1] > 0:
-                for new_img in image_data_augmentation(outImg):
+                for new_img in image_data_augmentation(outImg, self.functions):
                     cv2.imwrite(os.path.join(self.folder_path, self.orgName + str(self.count) + '.jpg'), new_img)
                     self.count += 1
         cv2.putText(self.tmp, '%s, %s' % (x, y), tuple(self.cur_pt), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2, 30)
@@ -112,5 +114,7 @@ class CreatSet(object):
 
 
 if __name__ == '__main__':
-    cs = CreatSet('fisheye', 10, 'images')
+    cs = CreatSet(orgName='jade_s', frame_interval=1, folder_path='images', functions=[flip, crop_center],
+                  begin_count=1)
+    # [flip, crop_center]
     cs.run()
