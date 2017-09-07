@@ -114,7 +114,7 @@ class CreatSet(object):
 
 
 if __name__ == '__main__':
-    cs = CreatSet(orgName='jade_s', frame_interval=1, folder_path='images', functions=[flip, crop_center],
+    cs = CreatSet(orgName='out_global_nuc_0825_1_s', frame_interval=1, folder_path='images', functions=[flip, crop_center],
                   begin_count=1)
     # [flip, crop_center]
     cs.run()
