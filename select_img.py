@@ -1,3 +1,10 @@
+#! /usr/bin/env python
+# -*- coding=utf-8 -*-
+
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 import cv2
 import os
 
@@ -35,9 +42,9 @@ def run(video_path, out_folder_path, label, frame_interval):
 
 
 if __name__ == '__main__':
-    video_path = '/home/zj/database/zmart_data/video/fisheye.avi'
-    out_folder_path = '/home/zj/my_workspace/test/image_out'
-    label = 'fisheye'
-    frame_interval = 10
+    video_path = '/home/zj/database/fisheye_data/video/fisheye1020square.avi'
+    out_folder_path = '/home/zj/my_workspace/create_set_py/image_select'
+    label = 'fisheye1020_'
+    frame_interval = 5
 
     run(video_path, out_folder_path, label, frame_interval)
