@@ -45,6 +45,7 @@ class CreatSet(object):
     img = np.array([])
     tmp = np.array([])
     widthHeightRatio = 1.0
+    video_path = ''
     orgName = ''
 
     pre_pt = np.zeros(2, np.int32)
@@ -54,8 +55,9 @@ class CreatSet(object):
 
     count = 1
 
-    def __init__(self, orgName, frame_interval, folder_path, functions, begin_count = 1):
-        self.orgName = orgName
+    def __init__(self, video_path, output_label, frame_interval, folder_path, functions, begin_count = 1):
+        self.video_path = video_path
+        self.orgName = output_label
         self.frame_interval = frame_interval
         self.folder_path = folder_path
         if not os.path.exists(self.folder_path):
@@ -86,11 +88,11 @@ class CreatSet(object):
                 for new_img in image_data_augmentation(outImg, self.functions):
                     cv2.imwrite(os.path.join(self.folder_path, self.orgName + str(self.count) + '.jpg'), new_img)
                     self.count += 1
-        cv2.putText(self.tmp, '%s, %s' % (x, y), tuple(self.cur_pt), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 2, 30)
+        cv2.putText(self.tmp, '%s, %s' % (x, y), tuple(self.cur_pt), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2, 30)
         cv2.imshow('img', self.tmp)
 
     def run(self):
-        cap = cv2.VideoCapture(self.orgName + '.avi')
+        cap = cv2.VideoCapture(self.video_path)
         if not cap.isOpened():
             print('read video error')
             return
@@ -119,7 +121,11 @@ class CreatSet(object):
 
 
 if __name__ == '__main__':
-    cs = CreatSet(orgName='329_2', frame_interval=1, folder_path='images', functions=[flip, crop_center],
+    cs = CreatSet(video_path='/home/zj/database/fisheye_data/video/out_global.avi',
+                  output_label='329_2',
+                  frame_interval=1,
+                  folder_path='images',
+                  functions=[flip, crop_center],
                   begin_count=1)
     # [flip, crop_center]
     cs.run()
