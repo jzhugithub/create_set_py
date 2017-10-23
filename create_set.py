@@ -1,5 +1,10 @@
 #! /usr/bin/env python
 # -*- coding=utf-8 -*-
+
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 import cv2
 import numpy as np
 import os
@@ -114,7 +119,7 @@ class CreatSet(object):
 
 
 if __name__ == '__main__':
-    cs = CreatSet(orgName='out_global_nuc_0825_1_s', frame_interval=1, folder_path='images', functions=[flip, crop_center],
+    cs = CreatSet(orgName='329_2', frame_interval=1, folder_path='images', functions=[flip, crop_center],
                   begin_count=1)
     # [flip, crop_center]
     cs.run()
