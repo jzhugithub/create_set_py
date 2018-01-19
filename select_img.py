@@ -42,9 +42,13 @@ def run(video_path, out_folder_path, label, frame_interval):
 
 
 if __name__ == '__main__':
-    video_path = '/home/zj/database/fisheye_data/video/fisheye1020square.avi'
+    print('n: next frame')
+    print('s: select this frame')
+    print('other letter: exit')
+
+    video_path = '/home/zj/database/fisheye_data/video/out_fisheye01191.avi'
     out_folder_path = '/home/zj/my_workspace/create_set_py/image_select'
-    label = 'fisheye1020_'
+    label = 'out_fisheye01191_'
     frame_interval = 5
 
     run(video_path, out_folder_path, label, frame_interval)
