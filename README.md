@@ -8,3 +8,7 @@ read video, crop frames
 ## select_img.py
 
 read video, select some frames
+
+## image_process.py
+
+crop images
