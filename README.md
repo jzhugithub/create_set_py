@@ -12,3 +12,7 @@ read video, select some frames
 ## image_process.py
 
 crop images
+
+## annotation_convert.py
+
+convert annotations created by labelme(.json) to labelImg(.xml)
