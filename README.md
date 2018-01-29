@@ -16,3 +16,7 @@ crop images
 ## annotation_convert.py
 
 convert annotations created by labelme(.json) to labelImg(.xml)
+
+## rotate_dataset.py
+
+rotate images and annotations, convert annotations created by labelme(.json) to labelImg(.xml)
