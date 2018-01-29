@@ -97,12 +97,14 @@ def main():
     json_dict = '/home/zj/database_temp/fisheye2_data_set/annotations_labelme'
     image_dict = '/home/zj/database_temp/fisheye2_data_set/images'
     image_size = [960, 960]
+    label_list_check = ['ir', 'ob']
+
     for root, dirs, files in os.walk(json_dict):
         for json_name in files:
             print('convert {}'.format(json_name))
             json_path = os.path.join(json_dict, json_name)
             image_path = os.path.join(image_dict, json_name[:-5] + '.jpg')
-            shapes, labels = get_shapes_labels(json_path, ['ir', 'ob'])
+            shapes, labels = get_shapes_labels(json_path, label_list_check)
             bboxs = get_bboxs(shapes)
             get_xml(image_path, image_size, labels, bboxs)
 
