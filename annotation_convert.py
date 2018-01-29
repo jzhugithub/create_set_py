@@ -99,7 +99,7 @@ def main():
     image_size = [960, 960]
     for root, dirs, files in os.walk(json_dict):
         for json_name in files:
-            print('trans {}'.format(json_name))
+            print('convert {}'.format(json_name))
             json_path = os.path.join(json_dict, json_name)
             image_path = os.path.join(image_dict, json_name[:-5] + '.jpg')
             shapes, labels = get_shapes_labels(json_path, ['ir', 'ob'])
